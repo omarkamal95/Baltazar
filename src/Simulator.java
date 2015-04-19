@@ -55,7 +55,66 @@ public class Simulator {
 		registers.put("$ra", 0);
 		
 	}
-	
+	// Execute R-type
+		public int executeR(int opcode, int rs , int rt , int rd, int shamt,int funcode ){
+
+			switch(funcode){
+			    //Add
+			case 100000 :
+				return rd=rs+rt; 
+				//Subtract 
+			case 100010 :	
+				return rd=rs-rt;
+				//AND
+			case 100100 :		
+				return rd=rs^rt;
+				//NOR
+			case 100111 :	
+				return rd= ~(rs|rt);
+				//OR	
+			case 100101 :
+				return rd=rs|rt;
+				//Set Less Than
+			case 101010 :
+				if(rs<rt)
+					return rd=1;
+				return rd=0;
+				//Shift logic left		
+			case 000000:		
+				return rd=rt<<shamt;
+				//Shift Logic Right	
+			case 000010 :	
+				return rd=rt>>>shamt;
+			default :
+				return rd=0;
+
+
+			}
+		}
+
+		// Excute I Type
+		public int executeI(int opcode, int rs, int rt, int address) {
+			switch (opcode) {
+			// Addi
+			case 001000:
+				return rt = rs + address;
+				// Slti
+			case 001010:
+				if (rs < address)
+					return rt = 1;
+				return rt = 0;
+				// Load
+			case 100011:
+				return rt = dataMemory[rs + address];
+				// Store
+			case 101011:
+				return dataMemory[rs + address] = rt;
+			default:
+				return 0;
+			}
+
+		}
+		//Here we should write excuteJ 
 	
 	
 }
