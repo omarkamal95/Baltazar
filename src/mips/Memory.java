@@ -1,17 +1,18 @@
 package mips;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Memory {
-	HashMap<Integer, String> M;
+	ArrayList<String> M;
 	
 	public String read(int address){
 		return M.get(address);
 	}
 	public void write(int address, String value){
-		M.put(address, value);
+		M.set(address, value);
 	}
-	public HashMap<Integer, String> getMemory(){
+	public ArrayList<String> getMemory(){
 		return M;
 	}
 }
