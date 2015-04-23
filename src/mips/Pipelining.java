@@ -17,6 +17,7 @@ public class Pipelining {
 
 		IFID.put("instruction", "0");
 		IFID.put("PCindex", "0");
+		IFID.put("Opcode", "0");
 
 		IDEX.put("PCindex", "0");
 		IDEX.put("data1", "0");
