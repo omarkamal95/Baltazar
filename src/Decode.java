@@ -436,7 +436,7 @@ public class Decode {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(assemble("add,$t0,$s0,$zero"));
+		System.out.println(assemble("sub,$t0,$s0,$zero"));
 		//System.out.println(moreDigits(5, 2));
 	}
 }
