@@ -62,4 +62,39 @@ public class Pipelining {
 		MEMWB.put("WriteReg", "0"); 
 			
 	}
+
+	public static HashMap<String, String> getIFID() {
+		return IFID;
+	}
+
+	public static void setIFID(HashMap<String, String> iFID) {
+		IFID = iFID;
+	}
+
+	public static HashMap<String, String> getIDEX() {
+		return IDEX;
+	}
+
+	public static void setIDEX(HashMap<String, String> iDEX) {
+		IDEX = iDEX;
+	}
+
+	public static HashMap<String, String> getEXMEM() {
+		return EXMEM;
+	}
+
+	public static void setEXMEM(HashMap<String, String> eXMEM) {
+		EXMEM = eXMEM;
+	}
+
+	public static HashMap<String, String> getMEMWB() {
+		return MEMWB;
+	}
+
+	public static void setMEMWB(HashMap<String, String> mEMWB) {
+		MEMWB = mEMWB;
+	}
+	public static HashMap<String, String> getEXMEM(HashMap<String, String> mEMWB) {
+		return EXMEM;
+	}
 }
