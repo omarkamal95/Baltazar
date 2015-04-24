@@ -2,7 +2,7 @@ package mips;
 
 public class Simulator {
 	Memory instructions, data = new Memory();
-	Registers registers = new Registers();
+	static Registers registers = new Registers();
 	
 	
 }
