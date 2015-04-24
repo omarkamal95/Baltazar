@@ -1,111 +1,129 @@
 package mips;
 
+import java.util.HashMap;
+
 public class ALU {
-	private String inputOne;
-	private String inputTwo;
+	private static String inputOne;
+	private static String inputTwo;
 	private String opcode;
 	static Memory dataMemory = new Memory();
+	static HashMap<String, String> IDEX;
+	static HashMap<String, String> EXMEM;
 
-	public void typeOfInstruction(String instruction) {
-		opcode = instruction.substring(0, 5);
-		// R
-		if (opcode.equals("00000")) {
-			String rs = instruction.substring(6, 10);
-			String rt = instruction.substring(11, 15);
-			String rd = instruction.substring(16, 20);
-			String shamt = instruction.substring(21, 25);
-			String funct = instruction.substring(26, 31);
-		}
-	}
+	
 
-	public ALU(int ALUSrc, String signExtend, String DataOne, String DataTwo) {
-		inputOne = DataOne;
-		if (ALUSrc == 1)
-			inputTwo = signExtend;
+	public static void eALU() {
+		String ALUOp = IDEX.get("ALUOp");
+		String functionCode = IDEX.get("Function");
+		inputOne = IDEX.get("rs");
+		if (IDEX.get("ALUSrc") == "1")
+			inputTwo = IDEX.get("SignExtend");
 		else
-			inputTwo = DataTwo;
-	}
-
-	public static String executeR(String opcode, String rs, String rt,
-			String rd, String shamt, String funcode) {
-
-		switch (funcode) {
-		// handle overflow!
-		// Add
-		case "100000":
-			return rd = (Integer.parseInt(rs, 2) + Integer.parseInt(rt, 2))
-					+ "";
-			// Subtract
-		case "100010":
-			return rd = (Integer.parseInt(rs, 2) - Integer.parseInt(rt, 2))
-					+ "";
-			// AND
-		case "100100":
-			return rd = to5Digits((Integer.parseInt(rs, 2) & Integer.parseInt(
-					rt, 2)));
-			// NOR
-		case "100111":
-			return rd = to5Digits(~(Integer.parseInt(rs, 2) | Integer.parseInt(
-					rt, 2)));
-			// OR
-		case "100101":
-			return rd = to5Digits((Integer.parseInt(rs, 2) | Integer.parseInt(rt, 2)));
-			// Set Less Than
-		case "101010":
-			if (Integer.parseInt(rs, 2) < Integer.parseInt(rt, 2))
-				return rd = "00001";
-			return rd = "00000";
-			// Shift logic left
-		case "000000":
-			return rd = to5Digits((Integer.parseInt(rt, 2) << Integer.parseInt(shamt, 2)));
-			// Shift Logic Right
-		case "000010":
-			return rd = to5Digits((Integer.parseInt(rt, 2) >>> Integer.parseInt(shamt, 2)));
+			inputTwo = IDEX.get("rt");
+		switch (ALUOp) {
+		// add -- LW and SW
+		case "00":
+			EXMEM.put(
+					"ALUResult",
+					moreDigits(5, (Integer.parseInt(inputOne, 2) + Integer
+							.parseInt(inputTwo, 2))));
+			break;
+		// sub -- BRANCH
+		case "01":
+			EXMEM.put(
+					"ALUResult",
+					moreDigits(5, (Integer.parseInt(inputOne, 2) - Integer
+							.parseInt(inputTwo, 2))));
+			if (Integer.parseInt(EXMEM.get("ALUResult")) == 0)
+				EXMEM.put("Zero", "1");
+			else
+				EXMEM.put("Zero", "0");
+			break;
+		// R-INSTRUCTIONS
+		case "10":
+			switch (functionCode) {
+			// add
+			case "100000":
+				EXMEM.put(
+						"ALUResult", moreDigits(5, (Integer.parseInt(inputOne, 2) + Integer
+								.parseInt(inputTwo, 2))));
+				break;
+			// sub
+			case "100010":
+				EXMEM.put(
+						"ALUResult",
+						moreDigits(5, (Integer.parseInt(inputOne, 2) - Integer
+								.parseInt(inputTwo, 2))));
+				break;
+			// and
+			case "100100":
+				EXMEM.put(
+						"ALUResult",
+						moreDigits(5, (Integer.parseInt(inputOne, 2) & Integer
+								.parseInt(inputTwo, 2))));
+				break;
+			// or
+			case "100101": 
+				EXMEM.put(
+						"ALUResult", moreDigits(5, (Integer.parseInt(inputOne, 2) ^ Integer
+								.parseInt(inputTwo, 2))));
+				break;
+			// nor
+			case "100111":
+				EXMEM.put(
+						"ALUResult", moreDigits(5, ~(Integer.parseInt(inputOne, 2) | Integer.parseInt(inputTwo, 2))));
+				break;
+				// slt
+			case "101010":
+				if (Integer.parseInt(inputOne, 2) > Integer.parseInt(inputTwo,
+						2))
+					EXMEM.put("ALUResult", "0");
+				else
+					EXMEM.put("ALUResult", "1");
+				break;
+			// sll
+			case "000000":
+				EXMEM.put("ALUResult", moreDigits(
+						5,
+						(Integer.parseInt(inputOne, 2) << Integer.parseInt(
+								IDEX.get("shamt"), 2))));
+				break;
+				//srl
+			case "000010":
+				EXMEM.put(
+						"ALUResult", moreDigits(5,
+						(Integer.parseInt(inputOne, 2) >>> Integer.parseInt(
+								IDEX.get("shamt"), 2))));
+				break;
+			}
+			break;
 		default:
-			return rd = "00000";
-
+			break;
+		
 		}
 	}
 
-	// Excute I Type
-	public static String executeI(String opcode, String rs, String rt,
-			String address) {
-		switch (opcode) {
-		// Addi
-		case "001000":
-			return rt = to5Digits((Integer.parseInt(rs, 2) + Integer.parseInt(
-					address, 2)));
-			// Slti
-		case "001010":
-			if (Integer.parseInt(rs, 2) < Integer.parseInt(address, 2))
-				return rt = "00001";
-			return rt = "00000";
-			// Load
-		case "100011":
-			return rt = to5Digits(Integer.parseInt(rs, 2)
-					+ Integer.parseInt(address, 2));
-			// Store
-		case "101011":
-			return to5Digits(Integer.parseInt(rs, 2)
-					+ Integer.parseInt(address, 2));
-
-		default:
-			return "0";
-		}
-
-	}
-
-	public static String to5Digits(int x) {
+	public static String moreDigits(int size, int x) {
 		String binary = Integer.toBinaryString(x);
-		for (int i = 5 - binary.length(); i > 0; i--) {
+		for (int i = size - binary.length(); i > 0; i--) {
 			binary = "0" + binary;
 		}
-		return binary;
-	}
+		return binary.substring(binary.length() - size, binary.length());
 
+	}
 	public static void main(String[] args) {
-		System.out.println(executeI("001000", "00010", "00001",
-				"0000000000000001"));
-		System.out.println(to5Digits(2));
+		Pipelining.initHashmaps();
+		IDEX = Pipelining.getIDEX();
+		EXMEM = Pipelining.getEXMEM();
+		IDEX.put("rs", "00001");
+		IDEX.put("rt", "00001");
+
+		IDEX.put("ALUOp", "01");
+		IDEX.put("Function", "000010");
+		IDEX.put("ALUSrc", "0");
+		IDEX.put("shamt", "00001");
+		eALU();
+		System.out.println(EXMEM.get("ALUResult"));
+		//System.out.println(moreDigits(5, Integer.parseInt(EXMEM.get("ALUResult"))));
 	}
 }
