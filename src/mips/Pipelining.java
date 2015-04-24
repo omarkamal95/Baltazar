@@ -11,7 +11,6 @@ public class Pipelining {
 
 	public static void initHashmaps() {
 		IFID = new HashMap<String, String>();
-		IFID = new HashMap<String, String>();
 		IDEX = new HashMap<String, String>();
 		EXMEM = new HashMap<String, String>();
 		MEMWB = new HashMap<String, String>();
