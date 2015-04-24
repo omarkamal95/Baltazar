@@ -19,6 +19,7 @@ public class Control {
 	private String Unsigned;
 	private String Upper;
 	
+	
 	public Control() {
 
 		opcode = Pipelining.getIFID().get("Opcode");
@@ -112,7 +113,7 @@ public class Control {
 			MemRead = "0";
 			MemWrite = "0";
 			RegWrite = "0";
-			Jump="1";
+			Jump="10";
 			break;
 		// jal
 		case "000011":
@@ -120,7 +121,7 @@ public class Control {
 			MemRead = "0";
 			MemWrite = "0";
 			RegWrite = "1";
-			Jump = "1";
+			Jump = "01";
 			break;
 		//lb
 		case "100000":
