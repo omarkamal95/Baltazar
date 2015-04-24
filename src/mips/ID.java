@@ -17,6 +17,7 @@ public class ID {
 	private static String functionCode;
 	private static String signExtended;
 	private static String shamt;
+	private static String jumpAddress;
 
 	public String getRs() {
 		return rs;
@@ -40,7 +41,8 @@ public class ID {
 		offset = instruction.substring(16);
 		rd = instruction.substring(16, 21);
 		shamt = instruction.substring(21, 26);
-		functionCode = instruction.substring(26);		
+		functionCode = instruction.substring(26);
+		jumpAddress = instruction.substring(6);
 	}
 	
 	public static void loadDataFromRegisters() {
@@ -66,6 +68,7 @@ public class ID {
 		IDEX.put("SignExtend", signExtended);
 		IDEX.put("Function", functionCode);
 		IDEX.put("Shamt", shamt);
+		IDEX.put("JumpAddress", jumpAddress);
 		
 	}
 	
