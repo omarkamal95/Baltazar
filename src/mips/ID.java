@@ -48,7 +48,7 @@ public class ID {
 		HashMap<String, String> IDEX = Pipelining.getIDEX();
 		// Shoof haneb3at el opcode lel controller ezay
 		IFID.put("Opcode" , opcode);
-		IFID.put("Rs", rs);
+		IFID.put("Rs", rs);	
 		IFID.put("Rt", rt);
 		System.out.println(rs);
 		System.out.println(rt);
@@ -58,12 +58,14 @@ public class ID {
 		
 		signExtended = signExtend(offset);
 		
-		IDEX.put("Rs", newRS);
-		IDEX.put("Rt", newRT);
+		IDEX.put("ReadData1", newRS);
+		IDEX.put("ReadData2", newRT);
 		IDEX.put("Rd", rd);
+		IDEX.put("Rt", rt);
 		IDEX.put("PC", IDEX.get("PC"));
 		IDEX.put("SignExtend", signExtended);
 		IDEX.put("Function", functionCode);
+		IDEX.put("Shamt", shamt);
 		
 	}
 	
