@@ -3,10 +3,10 @@ package mips;
 import java.util.HashMap;
 
 public class Pipelining {
-	private static HashMap<String, String> IFID;
-	private static HashMap<String, String> IDEX;
-	private static HashMap<String, String> EXMEM;
-	private static HashMap<String, String> MEMWB;
+    static HashMap<String, String> IFID;
+	static HashMap<String, String> IDEX;
+	static HashMap<String, String> EXMEM;
+	static HashMap<String, String> MEMWB;
 
 	public static void initHashmaps() {
 		IFID = new HashMap<String, String>();
