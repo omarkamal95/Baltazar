@@ -1,3 +1,4 @@
+
 package mips;
 
 import java.util.HashMap;
@@ -9,7 +10,6 @@ public class Pipelining {
 	private static HashMap<String, String> MEMWB;
 
 	public static void initHashmaps() {
-		IFID = new HashMap<String, String>();
 		IFID = new HashMap<String, String>();
 		IDEX = new HashMap<String, String>();
 		EXMEM = new HashMap<String, String>();
