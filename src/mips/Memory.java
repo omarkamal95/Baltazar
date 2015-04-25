@@ -10,9 +10,12 @@ public class Memory {
 		return M.get(address);
 	}
 	public void write(int address, String value){
-		M.set(address, value);
+		M.add(address, value);
 	}
 	public ArrayList<String> getMemory(){
 		return M;
 	}
+	public Memory() {
+		M = new ArrayList<String>(10);
+	};
 }

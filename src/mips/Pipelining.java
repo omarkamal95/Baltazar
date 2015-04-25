@@ -61,7 +61,6 @@ public class Pipelining {
 		MEMWB.put("MemAddress", "0");
 		
 		MEMWB.put("WriteReg", "0"); 
-			
 	}
 
 	public static HashMap<String, String> getIFID() {
