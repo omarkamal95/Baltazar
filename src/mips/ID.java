@@ -55,8 +55,8 @@ public class ID {
 		System.out.println(rs);
 		System.out.println(rt);
 		
-		String newRS = Integer.toString(Simulator.registers.getRegValue(rs));
-		String newRT = Integer.toString(Simulator.registers.getRegValue(rt));
+		String newRS = Integer.toBinaryString(Simulator.registers.getRegValue(rs));
+		String newRT = Integer.toBinaryString(Simulator.registers.getRegValue(rt));
 		
 		signExtended = signExtend(offset);
 		
@@ -64,6 +64,7 @@ public class ID {
 		IDEX.put("ReadData2", newRT);
 		IDEX.put("Rd", rd);
 		IDEX.put("Rt", rt);
+		IDEX.put("Rs", rs);
 		IDEX.put("PC", IDEX.get("PC"));
 		IDEX.put("SignExtend", signExtended);
 		IDEX.put("Function", functionCode);
@@ -83,6 +84,7 @@ public class ID {
 	public static void Decode() {
 		getDataFromPipline();
 		loadDataFromRegisters();
+		Control.Control();
 	}
 	
 	public static void main(String [] args) {

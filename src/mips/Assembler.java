@@ -19,6 +19,7 @@ public class Assembler {
 	private static String shamt;
 	private static String offset;
 	
+
 	public static String assemble(String instruction) {
 
 		instructionArray = instruction.split(",");
@@ -29,6 +30,7 @@ public class Assembler {
 		if(instructionArray.length>3){
 			input3 = instructionArray[3];
 		}
+
 
 
 		return decideFormat();
@@ -199,13 +201,15 @@ public class Assembler {
 			functionCode = "000010";
 			int x=Integer.parseInt(input3);
 			moreDigits(5,x);
+
 			return opcode + "00000" + toReg2Value() + toReg1Value()
 					+ shamt + functionCode;
 		}
 		case "sltu":{
-			functionCode ="101011";
-			return opcode + toReg2Value() + toReg3Value() + toReg1Value()
-					+ "00000" + functionCode;}
+			functionCode ="101001";
+			return opcode + toReg2Value() + toReg1Value()+ toReg3Value()
+					+"00000" + functionCode;}
+
 
 		default: {
 			return "";
@@ -528,6 +532,7 @@ public class Assembler {
 	}
 
 
+
 	public static String moreDigits(int size, int x) {
 				String binary = Integer.toBinaryString(x);
 				for (int i = size - binary.length(); i > 0; i--) {
@@ -539,15 +544,19 @@ public class Assembler {
 	public static String moreNegDigits(int size, int x) {
 		String binary = Integer.toBinaryString(x);
 		binary=binary.substring(16);
+
 		for (int i = size - binary.length(); i > 0; i--) {
 			binary = "1" + binary;
 		}
-		return binary;
+		 return binary;
+		 }
 
-}
 	public static void main(String[] args) {
-	System.out.println(assemble("sll,$t1,$t1,2"));
+	String instruction = assemble("sltu,$t1,$t2,$t1");
+		System.out.println(instruction);
+	System.out.println(instruction.length());
 		//System.out.println(moreDigits(5, 2));
 		//System.out.println("001000010010100111111111111111111111111111111100".length());
+
 	}
 }

@@ -9,14 +9,16 @@ public class EX {
 		
 		String signExtend = Pipelining.getIDEX().get("SignExtend");
 		int se = Integer.parseInt(signExtend, 2);
-		int addex = se +  Simulator.PC;
+		int addex = se +  Simulator.getPC();
 		
+		Pipelining.getEXMEM().put("RegWrite", ""+Pipelining.getIDEX().get("RegWrite"));
 		Pipelining.getEXMEM().put("MemWrite", ""+Pipelining.getIDEX().get("MemWrite"));
 		Pipelining.getEXMEM().put("MemRead", ""+Pipelining.getIDEX().get("MemRead"));
 		Pipelining.getEXMEM().put("MemtoReg", ""+Pipelining.getIDEX().get("MemtoReg"));
 		Pipelining.getEXMEM().put("AddEx", ""+addex);
 		Pipelining.getEXMEM().put("Branch", ""+Pipelining.getIDEX().get("Branch"));
 		Pipelining.getEXMEM().put("ReadData2", Pipelining.getIDEX().get("ReadData2"));
+		Pipelining.getEXMEM().put("ReadData1", Pipelining.getIDEX().get("Rs"));
 		
 		
 		if (Integer.parseInt(Pipelining.getEXMEM().get("Zero")) == 1 && 
@@ -27,17 +29,16 @@ public class EX {
 			Simulator.branch= true;
 			
 			if(Integer.parseInt(Pipelining.getIDEX().get("Jump")) == 1 ){
-				Simulator.PC = Integer.parseInt(Pipelining.getIDEX().get("JumpAdress"));
+				Simulator.setPC(Integer.parseInt(Pipelining.getIDEX().get("JumpAdress")));
 			}
 			else {
-				Simulator.PC = addex;
+				Simulator.setPC(addex);
 			}
 			
 		}
 		
 		
-		
-		if(Integer.parseInt(Pipelining.getIDEX().get("RegDest")) == 1) {
+		if(Integer.parseInt(Pipelining.getIDEX().get("RegDst")) == 1) {
 			Pipelining.getEXMEM().put("WriteReg", Pipelining.getIDEX().get("Rd"));
 			
 		} else {

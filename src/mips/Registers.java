@@ -24,7 +24,7 @@ public class Registers {
 	registers.put("01101", 0);	//$t5
 	registers.put("01110", 0);	//$t6
 	registers.put("01111", 0);	//$t7
-	registers.put("10000", 0);	//$s0
+	registers.put("10000", 10);	//$s0
 	registers.put("10001", 0);	//$s1
 	registers.put("10010", 0);	//$s2
 	registers.put("10011", 0);	//$s3
@@ -47,5 +47,9 @@ public class Registers {
 	}
 	public void setReg(String address, int value){
 		registers.put(address, value);
+	}
+
+	public void put(String regDestination, int parseInt) {
+		registers.put(regDestination, parseInt);
 	}
 }

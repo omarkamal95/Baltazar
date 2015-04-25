@@ -3,24 +3,24 @@ package mips;
 import com.sun.xml.internal.ws.api.pipe.Pipe;
 
 public class Control {
-	private String RegDst; // determines if we have an RD?, goes into the
+	private static String RegDst; // determines if we have an RD?, goes into the
 							// register
 							// class
-	private String Branch; // does it branch?
-	private String MemRead; // read from memory?
-	private String MemToReg; // put into reg
-	private String ALUOp; // two bits for the ALUControl
-	private String MemWrite; // write into memory
-	private String ALUSrc; // to determine where the second ALU input is from
-	private String RegWrite; // will we write to reg?
-	private String opcode;
-	private String Jump;
-	private String Byte;
-	private String Unsigned;
-	private String Upper;
+	private static String Branch = "0"; // does it branch?
+	private static String MemRead = "0"; // read from memory?
+	private static String MemToReg = "0"; // put into reg
+	private static String ALUOp = "00"; // two bits for the ALUControl
+	private static String MemWrite = "0"; // write into memory
+	private static String ALUSrc = "0"; // to determine where the second ALU input is from
+	private static String RegWrite = "0"; // will we write to reg?
+	private static String opcode = "0";
+	private static String Jump = "0";
+	private static String Byte = "0";
+	private static String Unsigned = "0";
+	private static String Upper = "0";
 	
 	
-	public Control() {
+	public static void Control() {
 
 		opcode = Pipelining.getIFID().get("Opcode");
 
@@ -35,6 +35,7 @@ public class Control {
 			MemWrite = "0";
 			ALUSrc = "0";
 			RegWrite = "1";
+			Unsigned = "0";
 			break;
 		// addi
 		case "001000":
@@ -46,6 +47,7 @@ public class Control {
 			MemWrite = "0";
 			ALUSrc = "1";
 			RegWrite = "1";
+			Unsigned = "0";
 			break;
 		// lw
 		case "100011":
@@ -57,6 +59,7 @@ public class Control {
 			ALUOp = "00";
 			ALUSrc = "1";
 			RegWrite = "1";
+			Unsigned = "0";
 			break;
 		// sw
 		case "101011":
@@ -66,6 +69,7 @@ public class Control {
 			MemWrite = "1";
 			ALUSrc = "1";
 			RegWrite = "0";
+			Unsigned = "0";
 			break;
 		//sb
 		case "101000":
@@ -76,6 +80,7 @@ public class Control {
 			ALUSrc = "1";
 			RegWrite = "0";
 			Byte="1";
+			Unsigned = "0";
 			break;
 		// beq
 		case "000100":
@@ -85,6 +90,7 @@ public class Control {
 			MemWrite = "0";
 			ALUSrc = "0";
 			RegWrite = "0";
+			Unsigned = "0";
 			break;
 		// bne
 		case "000101":
@@ -94,6 +100,7 @@ public class Control {
 			MemWrite = "0";
 			ALUSrc = "0";
 			RegWrite = "0";
+			Unsigned = "0";
 			break;
 		// lui
 		case "001111":
@@ -106,6 +113,7 @@ public class Control {
 			ALUSrc = "1";
 			RegWrite = "1";
 			Upper="1";
+			Unsigned = "0";
 			break;
 		// j
 		case "000010":
@@ -114,6 +122,7 @@ public class Control {
 			MemWrite = "0";
 			RegWrite = "0";
 			Jump="10";
+			Unsigned = "0";
 			break;
 		// jal
 		case "000011":
@@ -122,6 +131,7 @@ public class Control {
 			MemWrite = "0";
 			RegWrite = "1";
 			Jump = "01";
+			Unsigned = "0";
 			break;
 		//lb
 		case "100000":
@@ -134,6 +144,7 @@ public class Control {
 			ALUOp = "00";
 			ALUSrc = "1";
 			RegWrite = "1";
+			Unsigned = "0";
 			break;
 		//lbu
 		case "100100":

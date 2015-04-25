@@ -11,13 +11,15 @@ public class ALU {
 	static HashMap<String, String> EXMEM;
 
 	public static void eALU() {
+		HashMap<String, String> IDEX = Pipelining.getIDEX();
+		HashMap<String, String> EXMEM = Pipelining.getEXMEM();
 		String ALUOp = IDEX.get("ALUOp");
 		String functionCode = IDEX.get("Function");
-		inputOne = IDEX.get("ReadData1");
+		inputOne = IDEX.get("ReadData2");
 		if (IDEX.get("ALUSrc") == "1")
 			inputTwo = IDEX.get("SignExtend");
 		else
-			inputTwo = IDEX.get("ReadData2");
+			inputTwo = IDEX.get("ReadData1");
 		switch (ALUOp) {
 		// add -- LW and SW
 		case "00":
@@ -80,22 +82,26 @@ public class ALU {
 				break;
 				// slt/sltu
 			case "101010":
-				if (IDEX.get("Unsigned").equals("1")){
-					if (Long.parseLong(((Long.toUnsignedString(Long.parseLong(inputOne, 2), 2))), 2) > 
-					Long.parseLong((Long.toUnsignedString(Long.parseLong(inputTwo, 2), 2)), 2))
+				if (Integer.parseInt(inputOne, 2) > Integer.parseInt(inputTwo,
+					2))
+				EXMEM.put("ALUResult", "0");
+			else
+				EXMEM.put("ALUResult", "1");
+			break;
+			//sltu
+			case "101011":
+				Long x = (Long.parseLong(((Long.toUnsignedString(Long.parseLong(inputOne, 2), 2))), 2));
+				Long y = (Long.parseLong(((Long.toUnsignedString(Long.parseLong(inputTwo, 2), 2))), 2));
+				
+				System.out.println("X: " + x);
+				System.out.println("Y: " + y);
+					if (x >y)
 					{
 						EXMEM.put("ALUResult", "0");
 					}else{
 							EXMEM.put("ALUResult", "1");
-					}
-				}else{
-				}
-				if (Integer.parseInt(inputOne, 2) > Integer.parseInt(inputTwo,
-						2))
-					EXMEM.put("ALUResult", "0");
-				else
-					EXMEM.put("ALUResult", "1");
-				break;
+					}	
+					break;
 			// sll
 			case "000000":
 				EXMEM.put("ALUResult", moreDigits(
@@ -152,7 +158,7 @@ public class ALU {
 		IDEX.put("Jump", "0");
 		IDEX.put("ALUOp", "10");
 		IDEX.put("SignExtend", "0000000");
-		IDEX.put("Function", "101010");
+		IDEX.put("Function", "101001");
 		IDEX.put("ALUSrc", "0");
 		IDEX.put("Unsigned", "1");
 		IDEX.put("shamt", "00001");

@@ -16,17 +16,17 @@ public class WB {
 			}
 			
 			public static void WriteToRegisters(){
-				WriteRegister = Pipelining.getMEMWB().get("RegWrite");
-				RegDestination = Pipelining.getMEMWB().get("WriteReg");
+				RegDestination = Pipelining.getMEMWB().get("RegWrite");
+				WriteRegister = Pipelining.getMEMWB().get("WriteReg");
 				value = Pipelining.getMEMWB().get("ReadData"); 
-				load =Pipelining.getEXMEM().get("MemRead");
-				
-				if(WriteRegister=="1"){
-					if(load=="0"){
-					Registers.getRegisters().put(RegDestination, Integer.parseInt(Pipelining.getIDEX().get("ALUResult")));
+				load =Pipelining.getMEMWB().get("MemRead");
+				System.out.println(WriteRegister);
+				if(RegDestination.equals("1")){
+					if(load.equals("0")){
+					Simulator.getRegisters().put(WriteRegister, Integer.parseInt(Pipelining.getMEMWB().get("ALUResult"), 2));
 				}
 					else{
-						Registers.getRegisters().put(RegDestination, Integer.parseInt(Pipelining.getMEMWB().get("ReadData")));
+						Simulator.getRegisters().put(WriteRegister, Integer.parseInt(Pipelining.getMEMWB().get("ALUResult"),2));
 					}
 			}
 			}

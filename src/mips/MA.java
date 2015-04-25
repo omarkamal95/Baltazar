@@ -40,27 +40,52 @@ public class MA {
 			PCofMA = Simulator.getPC();
 			
 			
-			jumpFlag = Pipelining.getIDEX().get("Jump");
-			byteFlag = Pipelining.getIDEX().get("Byte");
-			unsignedFlag = Pipelining.getIDEX().get("Byte"); 
-			upperFlag = Pipelining.getIDEX().get("Upper"); 
+			byteFlag = Pipelining.getEXMEM().get("Byte");
+			unsignedFlag = Pipelining.getEXMEM().get("Byte"); 
+			upperFlag = Pipelining.getEXMEM().get("Upper");
 			
-			doMA();
+			
 			
 		}
 		
-		public void doMA(){
-			readResult = DataMemory.read(loc);
+		public static void doMA(){
+			DataMemory = Simulator.data;
+			whatHappens = Pipelining.getEXMEM().get("Branch");
+			whatHappens = whatHappens + Pipelining.getEXMEM().get("MemRead");
+			whatHappens = whatHappens + Pipelining.getEXMEM().get("MemWrite");
+			
+			data = Pipelining.getEXMEM().get("ReadData2");
+			
+			location = Pipelining.getEXMEM().get("ALUResult");
+			loc = Integer.parseInt(location, 2); 
+			
+			PCofMA = Simulator.getPC();
+			
+			
+			byteFlag = Pipelining.getEXMEM().get("Byte");
+			unsignedFlag = Pipelining.getEXMEM().get("Byte"); 
+			upperFlag = Pipelining.getEXMEM().get("Upper"); 
+			
+			String writeReg = Pipelining.getEXMEM().get("WriteReg");
+			Pipelining.getMEMWB().put("WriteReg", writeReg);
+			
+			String RegWrite = Pipelining.getEXMEM().get("RegWrite");
+			Pipelining.getMEMWB().put("RegWrite", RegWrite);
+			
+			String ALUResult = Pipelining.getEXMEM().get("ALUResult");
+			Pipelining.getMEMWB().put("ALUResult", ALUResult);
+			
+			String MemRead = Pipelining.getEXMEM().get("MemRead");
+			Pipelining.getMEMWB().put("MemRead", MemRead);
 			
 			switch(whatHappens){
-			
 			case "100":
 				//Branch
 				break;
 				
 			case "010":
 				// Memory Read
-				
+				readResult = DataMemory.read(loc);
 				if(upperFlag=="1"){
 					// The immediate value is shifted left 16 bits and stored in the register. The lower 16 bits are zeroes
 					String upperI = readResult.substring(0,15);
@@ -82,10 +107,11 @@ public class MA {
 				if(byteFlag=="1"){
 				data = data.substring(0,7);
 				}
-				Pipelining.getMEMWB().put("RegWrite",data);
+				Pipelining.getMEMWB().put("WriteReg",data);
 				break;
 				
 			}
+			Pipelining.getMEMWB().put("ReadData", Pipelining.getEXMEM().get("ReadData1"));
 		}
 
 		public Memory getDataMemory() {
@@ -104,6 +130,5 @@ public class MA {
 		public void setReadResult(String readResult) {
 			this.readResult = readResult;
 		}
-		
 		
 }
