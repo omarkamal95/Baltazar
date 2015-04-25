@@ -10,8 +10,6 @@ public class ALU {
 	static HashMap<String, String> IDEX;
 	static HashMap<String, String> EXMEM;
 
-	
-
 	public static void eALU() {
 		String ALUOp = IDEX.get("ALUOp");
 		String functionCode = IDEX.get("Function");
@@ -23,10 +21,17 @@ public class ALU {
 		switch (ALUOp) {
 		// add -- LW and SW
 		case "00":
+			if (IDEX.get("Unsigned").equals("1")){
+
+				EXMEM.put(
+						"ALUResult",
+						moreDigits(5, Integer.parseInt((Long.toUnsignedString(Long.parseLong(inputOne, 2), 2) + (Long.toUnsignedString(Long.parseLong(inputTwo, 2), 2))))));	
+			}else{
 			EXMEM.put(
 					"ALUResult",
 					moreDigits(5, (Integer.parseInt(inputOne, 2) + Integer
 							.parseInt(inputTwo, 2))));
+			}
 			break;
 		// sub -- BRANCH
 		case "01":
@@ -73,8 +78,18 @@ public class ALU {
 				EXMEM.put(
 						"ALUResult", moreDigits(5, ~(Integer.parseInt(inputOne, 2) | Integer.parseInt(inputTwo, 2))));
 				break;
-				// slt
+				// slt/sltu
 			case "101010":
+				if (IDEX.get("Unsigned").equals("1")){
+					if (Long.parseLong(((Long.toUnsignedString(Long.parseLong(inputOne, 2), 2))), 2) > 
+					Long.parseLong((Long.toUnsignedString(Long.parseLong(inputTwo, 2), 2)), 2))
+					{
+						EXMEM.put("ALUResult", "0");
+					}else{
+							EXMEM.put("ALUResult", "1");
+					}
+				}else{
+				}
 				if (Integer.parseInt(inputOne, 2) > Integer.parseInt(inputTwo,
 						2))
 					EXMEM.put("ALUResult", "0");
@@ -127,21 +142,24 @@ public class ALU {
 		return binary.substring(binary.length() - size, binary.length());
 
 	}
+
 	public static void main(String[] args) {
 		Pipelining.initHashmaps();
 		IDEX = Pipelining.getIDEX();
 		EXMEM = Pipelining.getEXMEM();
-		IDEX.put("ReadData1", "00100");
+		IDEX.put("ReadData1", "11100");
 		IDEX.put("ReadData2", "00001");
 		IDEX.put("Jump", "0");
-		IDEX.put("ALUOp", "00");
+		IDEX.put("ALUOp", "10");
 		IDEX.put("SignExtend", "0000000");
-		IDEX.put("Function", "000010");
+		IDEX.put("Function", "101010");
 		IDEX.put("ALUSrc", "0");
+		IDEX.put("Unsigned", "1");
 		IDEX.put("shamt", "00001");
 		eALU();
 		System.out.println(EXMEM.get("ALUResult"));
 		System.out.println(EXMEM.get("Zero"));
-		//System.out.println(moreDigits(5, Integer.parseInt(EXMEM.get("ALUResult"))));
+		// System.out.println(moreDigits(5,
+		// Integer.parseInt(EXMEM.get("ALUResult"))));
 	}
 }
