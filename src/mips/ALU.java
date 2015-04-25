@@ -103,7 +103,6 @@ public class ALU {
 			}
 			break;
 		case "11":
-			if (IDEX.get("Jump").equals("0")){
 			//bne
 			EXMEM.put(
 					"ALUResult",
@@ -113,9 +112,6 @@ public class ALU {
 				EXMEM.put("Zero", "0");
 			else
 				EXMEM.put("Zero", "1");
-			} else {
-			
-			}
 			break;
 		default:
 			break;

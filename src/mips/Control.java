@@ -17,6 +17,8 @@ public class Control {
 	private String Jump;
 	private String Byte;
 	private String Unsigned;
+	private String Upper;
+	
 	
 	public Control() {
 
@@ -103,6 +105,7 @@ public class Control {
 			ALUOp = "11";
 			ALUSrc = "1";
 			RegWrite = "1";
+			Upper="1";
 			break;
 		// j
 		case "000010":
@@ -110,7 +113,7 @@ public class Control {
 			MemRead = "0";
 			MemWrite = "0";
 			RegWrite = "0";
-			Jump="1";
+			Jump="10";
 			break;
 		// jal
 		case "000011":
@@ -118,7 +121,7 @@ public class Control {
 			MemRead = "0";
 			MemWrite = "0";
 			RegWrite = "1";
-			Jump = "1";
+			Jump = "01";
 			break;
 		//lb
 		case "100000":
