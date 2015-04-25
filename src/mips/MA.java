@@ -18,8 +18,13 @@ public class MA {
 			static int PCofMA;
 			// the value of PC at the instance
 			
-			static String OpCodeSubString;
-			// first 6 bits of the current Instruction's opcode to check lb/lbu/sb/lui/sw/lw
+			static String jumpFlag;
+			
+			static String byteFlag;
+			
+			static String unsignedFlag;
+			
+			static String upperFlag;
 		
 		public MA( ){
 			
@@ -34,13 +39,18 @@ public class MA {
 			
 			PCofMA = Simulator.getPC();
 			
-			OpCodeSubString = (Assembler.getResultCode()).substring(0,5);
+			
+			jumpFlag = Pipelining.getIDEX().get("Jump");
+			byteFlag = Pipelining.getIDEX().get("Byte");
+			unsignedFlag = Pipelining.getIDEX().get("Byte"); 
+			upperFlag = Pipelining.getIDEX().get("Upper"); 
 			
 			doMA();
 			
 		}
 		
 		public void doMA(){
+			readResult = DataMemory.read(loc);
 			
 			switch(whatHappens){
 			
@@ -50,23 +60,31 @@ public class MA {
 				
 			case "010":
 				// Memory Read
-				readResult = DataMemory.read(loc);
-				Pipelining.getMEMWB().put("ReadData", readResult);
 				
-						switch(OpCodeSubString){
-						case "100101": 
-					// lb
-					Pipelining.getMEMWB().put("ReadData", readResult.substring(0, 7));
-						case "":
-												}
+				if(upperFlag=="1"){
+					// The immediate value is shifted left 16 bits and stored in the register. The lower 16 bits are zeroes
+					String upperI = readResult.substring(0,15);
+					upperI = "0000000000000000" + upperI;
+					Pipelining.getMEMWB().put("ReadData", upperI);	
+				}
+				if (byteFlag=="1" && unsignedFlag=="1"){
+					String upperByte = readResult.substring(0,7);
+					upperByte = "00000000000000000000000000000000" + upperByte;
+					Pipelining.getMEMWB().put("ReadData", upperByte);
+				}
 				
-				break;
+				
+							break;			
 				
 			case "001":
 				// Memory Write
 				// Moves to WB of the last pipelining hashmap
+				if(byteFlag=="1"){
+				data = data.substring(0,7);
+				}
 				Pipelining.getMEMWB().put("RegWrite",data);
 				break;
+				
 			}
 		}
 
