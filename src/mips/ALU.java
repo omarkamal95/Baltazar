@@ -15,11 +15,11 @@ public class ALU {
 	public static void eALU() {
 		String ALUOp = IDEX.get("ALUOp");
 		String functionCode = IDEX.get("Function");
-		inputOne = IDEX.get("rs");
+		inputOne = IDEX.get("ReadData1");
 		if (IDEX.get("ALUSrc") == "1")
 			inputTwo = IDEX.get("SignExtend");
 		else
-			inputTwo = IDEX.get("rt");
+			inputTwo = IDEX.get("ReadData2");
 		switch (ALUOp) {
 		// add -- LW and SW
 		case "00":
@@ -86,16 +86,32 @@ public class ALU {
 				EXMEM.put("ALUResult", moreDigits(
 						5,
 						(Integer.parseInt(inputOne, 2) << Integer.parseInt(
-								IDEX.get("shamt"), 2))));
+								IDEX.get("Shamt"), 2))));
 				break;
 				//srl
 			case "000010":
 				EXMEM.put(
 						"ALUResult", moreDigits(5,
 						(Integer.parseInt(inputOne, 2) >>> Integer.parseInt(
-								IDEX.get("shamt"), 2))));
+								IDEX.get("Shamt"), 2))));
 				break;
+				//jr --not sure, t2reeban msh bydkholhom
+			case "001000":
+				EXMEM.put("ALUResult", inputTwo);
+				break;
+
 			}
+			break;
+		case "11":
+			//bne
+			EXMEM.put(
+					"ALUResult",
+					moreDigits(5, (Integer.parseInt(inputOne, 2) - Integer
+							.parseInt(inputTwo, 2))));
+			if (Integer.parseInt(EXMEM.get("ALUResult")) == 0)
+				EXMEM.put("Zero", "0");
+			else
+				EXMEM.put("Zero", "1");
 			break;
 		default:
 			break;
@@ -115,15 +131,17 @@ public class ALU {
 		Pipelining.initHashmaps();
 		IDEX = Pipelining.getIDEX();
 		EXMEM = Pipelining.getEXMEM();
-		IDEX.put("rs", "00001");
-		IDEX.put("rt", "00001");
-
-		IDEX.put("ALUOp", "01");
+		IDEX.put("ReadData1", "00100");
+		IDEX.put("ReadData2", "00001");
+		IDEX.put("Jump", "0");
+		IDEX.put("ALUOp", "00");
+		IDEX.put("SignExtend", "0000000");
 		IDEX.put("Function", "000010");
 		IDEX.put("ALUSrc", "0");
 		IDEX.put("shamt", "00001");
 		eALU();
 		System.out.println(EXMEM.get("ALUResult"));
+		System.out.println(EXMEM.get("Zero"));
 		//System.out.println(moreDigits(5, Integer.parseInt(EXMEM.get("ALUResult"))));
 	}
 }
