@@ -37,14 +37,22 @@ public class Assembler {
 				|| function.toLowerCase().equals("or")
 				|| function.toLowerCase().equals("slt")
 				|| function.toLowerCase().equals("sll")
-				|| function.toLowerCase().equals("slr")) {
+				|| function.toLowerCase().equals("slr")
+				|| function.toLowerCase().equals("sltu")) {
+		
 			return toMachineCodeR();
 		}
 		if (function.toLowerCase().equals("addi")
 				|| function.toLowerCase().equals("andi")
 				|| function.toLowerCase().equals("sw")
 				|| function.toLowerCase().equals("lw")
-				|| function.toLowerCase().equals("slti")) {
+				|| function.toLowerCase().equals("slti")
+				|| function.toLowerCase().equals("lb")
+				|| function.toLowerCase().equals("lbu")
+				|| function.toLowerCase().equals("lui")
+				|| function.toLowerCase().equals("beq")
+				|| function.toLowerCase().equals("bne")) {
+			
 			return toMachineCodeI();
 		} else {
 			return "";
@@ -81,7 +89,47 @@ public class Assembler {
 			
 			
 		}
+		case "lb":{
+			opcode="100000";
+			offset = input2;
+			String [] resultOff=offset.split("\\(");
+			String y=resultOff[0];
+			int w=Integer.parseInt(y);
+			y=moreDigits(16,w);
+			String z=resultOff[1].substring(0,resultOff[1].length()-1);
+			input3 = z;
+			return opcode+toReg3Value()+toReg1Value()+y;	
+		}
+		case "lbu":{
+			opcode="100100";
+			offset = input2;
+			String [] resultOff=offset.split("\\(");
+			String y=resultOff[0];
+			int w=Integer.parseInt(y);
+			y=moreDigits(16,w);
+			String z=resultOff[1].substring(0,resultOff[1].length()-1);
+			input3 = z;
+			return opcode+toReg3Value()+toReg1Value()+y;	
+		}
+		case "sb":{
+			opcode= "101000";
+			offset = input2;
+			String [] resultOff=offset.split("\\(");
+			String y=resultOff[0];
+			int w=Integer.parseInt(y);
+			y=moreDigits(16,w);
+			String z=resultOff[1].substring(0,resultOff[1].length()-1);
+			input3 = z;
+			return opcode+toReg3Value()+toReg1Value()+y;	
 			
+		}
+		case "lui":{
+			opcode="001111";
+			String immidiate = moreDigits(5,Integer.parseInt(toReg3Value()));
+			
+			return opcode+"00000"+toReg1Value()+toReg3Value();
+		}
+		
 
 		default: {
 			return "";
@@ -144,6 +192,11 @@ public class Assembler {
 			return opcode + "00000" + toReg2Value() + toReg1Value()
 					+ shamt + functionCode;
 		}
+		case "sltu":{
+			functionCode ="101011";
+			 return opcode + toReg2Value() + toReg3Value() + toReg1Value()
+				+ "00000" + functionCode;}
+
 		default: {
 			return "";
 
@@ -453,20 +506,41 @@ public class Assembler {
 			return resultCode = "11111";
 		} else { int x=Integer.parseInt(input3);
 			return moreDigits(16,x);
+		//if(input3.charAt(0)== '-'){
+			
 			
 		}
-	}
+			//
+			
+		}
+	
 
 	public static String moreDigits(int size, int x) {
 		String binary = Integer.toBinaryString(x);
+		long l=Long.parseLong(binary,2);
+
+ 
+		if(input3.charAt(0)== '-'){
+		
+		for(int i=size-binary.length(); i>0;i--){
+			binary="1"+binary;}
+		}
+		
+		else {
+			binary = Integer.toBinaryString(x);
+			long l1=Long.parseLong(binary,2);
 		for (int i = size - binary.length(); i > 0; i--) {
 			binary = "0" + binary;
 		}
+		 return binary;
+		 }
+		
 		return binary;
+		
 	}
-
+	
 	public static void main(String[] args) {
-		System.out.println(assemble("sw,$t2,0($t1)"));
+		System.out.println(assemble("addi,$t1,$t1,-4"));
 		//System.out.println(moreDigits(5, 2));
 	}
 }
