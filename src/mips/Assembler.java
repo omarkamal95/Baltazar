@@ -438,7 +438,7 @@ public class Assembler {
 
 	public static void main(String [] args) {
 		System.out.println(assemble("add,$t0,$s0,$zero"));
-		String s= "00000000000000010111000110001100";
+		String s= "00000000000000000000000000011100";
 	     
 		System.out.println(""+Integer.parseInt(s,2));
 	}
