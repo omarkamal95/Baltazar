@@ -3,9 +3,12 @@ package mips;
 public class IF {
 
 	public static void fetch() {
-		Simulator.PC ++;
-		Pipelining.IFID.put("instruction",Simulator.instructions.read(Simulator.PC) );
-		Pipelining.IFID.put("PC",""+Simulator.PC );
+		
+		if(!Simulator.branch) {
+		Simulator.setPC(Simulator.getPC() + 1);
+		}
+		Simulator.branch = false;
+		Pipelining.getIFID().put("instruction",Simulator.instructions.read(Simulator.getPC()) );
+		Pipelining.getIFID().put("PC",""+Simulator.getPC() );
 	}
-
 }
