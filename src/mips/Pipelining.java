@@ -45,7 +45,7 @@ public class Pipelining {
 		EXMEM.put("MemRead", "0");
 		
 		//wb
-		EXMEM.put("MemtoReg", "0");
+		EXMEM.put("MemToReg", "0");
 		EXMEM.put("RegWrite", "0");
 		
 		EXMEM.put("Zero", "0");
@@ -55,7 +55,7 @@ public class Pipelining {
 		EXMEM.put("WriteReg", "0"); 
 		
 		//wb
-		MEMWB.put("MemtoReg", "0");
+		MEMWB.put("MemToReg", "0");
 		MEMWB.put("RegWrite", "0");
 		MEMWB.put("ReadData", "0");
 		MEMWB.put("MemAddress", "0");

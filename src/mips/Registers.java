@@ -17,8 +17,8 @@ public class Registers {
 	registers.put("00110", 0);	//$a2
 	registers.put("00111", 0);	//$a3
 	registers.put("01000", 0);	//$t0
-	registers.put("01001", 0);	//$t1
-	registers.put("01010", 0);	//$t2
+	registers.put("01001", 1);	//$t1
+	registers.put("01010", 10);	//$t2
 	registers.put("01011", 0);	//$t3
 	registers.put("01100", 0);	//$t4
 	registers.put("01101", 0);	//$t5

@@ -49,6 +49,11 @@ public class MA {
 		}
 		
 		public static void doMA(){
+			
+			String Done = Pipelining.getEXMEM().get("Done");
+			Pipelining.getMEMWB().put("Done", Done);
+			
+			if (Done.equals("0")) {
 			DataMemory = Simulator.data;
 			whatHappens = Pipelining.getEXMEM().get("Branch");
 			whatHappens = whatHappens + Pipelining.getEXMEM().get("MemRead");
@@ -78,6 +83,9 @@ public class MA {
 			String MemRead = Pipelining.getEXMEM().get("MemRead");
 			Pipelining.getMEMWB().put("MemRead", MemRead);
 			
+			String MemToReg = Pipelining.getEXMEM().get("MemToReg");
+			Pipelining.getMEMWB().put("MemToReg", MemToReg);
+			
 			switch(whatHappens){
 			case "100":
 				//Branch
@@ -86,6 +94,7 @@ public class MA {
 			case "010":
 				// Memory Read
 				readResult = DataMemory.read(loc);
+				System.out.println("Memory Load: " + readResult);
 				if(upperFlag=="1"){
 					// The immediate value is shifted left 16 bits and stored in the register. The lower 16 bits are zeroes
 					String upperI = readResult.substring(0,15);
@@ -97,8 +106,8 @@ public class MA {
 					upperByte = "00000000000000000000000000000000" + upperByte;
 					Pipelining.getMEMWB().put("ReadData", upperByte);
 				}
-				
-				
+				System.out.println("ReadResult(Value to be put in Registers" + readResult);
+				Pipelining.getMEMWB().put("ReadData", readResult);
 							break;			
 				
 			case "001":
@@ -112,6 +121,8 @@ public class MA {
 				
 			}
 			Pipelining.getMEMWB().put("ReadData", Pipelining.getEXMEM().get("ReadData1"));
+			}
+			
 		}
 
 		public Memory getDataMemory() {

@@ -71,6 +71,8 @@ public class ID {
 		IDEX.put("Shamt", shamt);
 		IDEX.put("JumpAddress", jumpAddress);
 		
+		
+		
 	}
 	
 	public static String signExtend(String toBeExtended) {
@@ -82,9 +84,13 @@ public class ID {
 		}
 	
 	public static void Decode() {
+		String Done = Pipelining.getIFID().get("Done");
+		Pipelining.getIDEX().put("Done", Done);
+		if (Done.equals("0")) {
 		getDataFromPipline();
 		loadDataFromRegisters();
 		Control.Control();
+		}
 	}
 	
 	public static void main(String [] args) {

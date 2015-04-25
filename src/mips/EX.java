@@ -5,6 +5,11 @@ public class EX {
 	
 	public static void execute(){
 		
+		String Done = Pipelining.getIDEX().get("Done");
+		System.err.println("DODOEODDODODOD " + Done);
+		Pipelining.getEXMEM().put("Done", Done);
+		if (Done.equals("0")) {
+			
 		ALU.eALU();
 		
 		String signExtend = Pipelining.getIDEX().get("SignExtend");
@@ -14,7 +19,7 @@ public class EX {
 		Pipelining.getEXMEM().put("RegWrite", ""+Pipelining.getIDEX().get("RegWrite"));
 		Pipelining.getEXMEM().put("MemWrite", ""+Pipelining.getIDEX().get("MemWrite"));
 		Pipelining.getEXMEM().put("MemRead", ""+Pipelining.getIDEX().get("MemRead"));
-		Pipelining.getEXMEM().put("MemtoReg", ""+Pipelining.getIDEX().get("MemtoReg"));
+		Pipelining.getEXMEM().put("MemToReg", ""+Pipelining.getIDEX().get("MemToReg"));
 		Pipelining.getEXMEM().put("AddEx", ""+addex);
 		Pipelining.getEXMEM().put("Branch", ""+Pipelining.getIDEX().get("Branch"));
 		Pipelining.getEXMEM().put("ReadData2", Pipelining.getIDEX().get("ReadData2"));
@@ -46,8 +51,7 @@ public class EX {
 			
 		}
 		
-		
-				
+		}
 		
 	}
 }
