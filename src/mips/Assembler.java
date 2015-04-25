@@ -552,8 +552,13 @@ public class Assembler {
 		 }
 
 	public static void main(String[] args) {
-	String instruction = assemble("add,$t1,$t1,$t2");
-		System.out.println(instruction);
+	//String instruction = assemble("add,$t1,$t1,$t2");
+//String instruction = assemble("add,$t3,$t1,$t2");
+	//String instruction = assemble("sub,$t4,$t1,$t2");
+		String instruction = assemble("sw,$t1,0($t2)");
+		
+		
+	System.out.println(instruction);
 	System.out.println(instruction.length());
 		//System.out.println(moreDigits(5, 2));
 		//System.out.println("001000010010100111111111111111111111111111111100".length());

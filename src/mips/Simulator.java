@@ -112,11 +112,12 @@ public class Simulator {
 			break;
 		case 8:
 			WB.WriteToRegisters();
+			System.out.println("REGISTER VALUES FEL AKHER KHALES" + registers.registers);
 			break;
 		default:
 			break;
 		}
-		System.out.println(data.getMemory());
+		System.out.println("DATA MEMORY " + data.getMemory());
 	}
 
 	public static int getPC() {
@@ -143,10 +144,11 @@ public class Simulator {
 		data.write(4, "5");
 
 		instructions.write(0, "00000001001010100100100000100000");
-		instructions.write(1, "00000001001010100100100000100000");
-		instructions.write(2, "00000001001010100100100000100000");
-		instructions.write(3, "00000001001010100100100000100000");
-		instructions.write(4, "00000001001010100100100000100000");
+		instructions.write(1, "00000001001010100101100000100000");
+		instructions.write(2, "00000001001010100110000000100010");
+		instructions.write(3, "00000001001010100110000000100010");
+		instructions.write(4, "10101101010010010000000000000000");
+		
 		s.startPipe();
 	}
 }

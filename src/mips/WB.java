@@ -22,8 +22,6 @@ public class WB {
 			WriteRegister = Pipelining.getMEMWB().get("WriteReg");
 			value = Pipelining.getMEMWB().get("ReadData");
 			load = Pipelining.getMEMWB().get("MemRead");
-			System.out.println(WriteRegister);
-			System.out.println(Pipelining.getMEMWB().get("value"));
 			if (RegDestination.equals("1")) {
 				if (load.equals("1")) {
 					

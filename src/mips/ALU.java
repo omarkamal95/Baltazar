@@ -93,8 +93,6 @@ public class ALU {
 				Long x = (Long.parseLong(((Long.toUnsignedString(Long.parseLong(inputOne, 2), 2))), 2));
 				Long y = (Long.parseLong(((Long.toUnsignedString(Long.parseLong(inputTwo, 2), 2))), 2));
 				
-				System.out.println("X: " + x);
-				System.out.println("Y: " + y);
 					if (x >y)
 					{
 						EXMEM.put("ALUResult", "0");
@@ -163,9 +161,6 @@ public class ALU {
 		IDEX.put("Unsigned", "1");
 		IDEX.put("shamt", "00001");
 		eALU();
-		System.out.println(EXMEM.get("ALUResult"));
-		System.out.println(EXMEM.get("Zero"));
-		// System.out.println(moreDigits(5,
-		// Integer.parseInt(EXMEM.get("ALUResult"))));
+		
 	}
 }

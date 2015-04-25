@@ -94,7 +94,6 @@ public class MA {
 			case "010":
 				// Memory Read
 				readResult = DataMemory.read(loc);
-				System.out.println("Memory Load: " + readResult);
 				if(upperFlag=="1"){
 					// The immediate value is shifted left 16 bits and stored in the register. The lower 16 bits are zeroes
 					String upperI = readResult.substring(0,15);
@@ -106,7 +105,6 @@ public class MA {
 					upperByte = "00000000000000000000000000000000" + upperByte;
 					Pipelining.getMEMWB().put("ReadData", upperByte);
 				}
-				System.out.println("ReadResult(Value to be put in Registers" + readResult);
 				Pipelining.getMEMWB().put("ReadData", readResult);
 							break;			
 				

@@ -6,7 +6,6 @@ public class EX {
 	public static void execute(){
 		
 		String Done = Pipelining.getIDEX().get("Done");
-		System.err.println("DODOEODDODODOD " + Done);
 		Pipelining.getEXMEM().put("Done", Done);
 		if (Done.equals("0")) {
 			
