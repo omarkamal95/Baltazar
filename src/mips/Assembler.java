@@ -25,6 +25,7 @@ public class Assembler {
 		instructionArray = instruction.split(",");
 		function = instructionArray[0];
 		input1 = instructionArray[1];
+		if(instructionArray.length >2)
 		input2 = instructionArray[2];
 		//input3= instructionArray[3];
 		if(instructionArray.length>3){
@@ -64,11 +65,12 @@ public class Assembler {
 				|| function.toLowerCase().equals("lbu")
 				|| function.toLowerCase().equals("lui")
 				|| function.toLowerCase().equals("beq")
-				|| function.toLowerCase().equals("bne")) {
+				|| function.toLowerCase().equals("bne")
+				|| function.toLowerCase().equals("j")) {
 
 			return toMachineCodeI();
 		} else {
-			return "";
+			return function.toLowerCase();
 		}
 	}
 
@@ -141,6 +143,45 @@ public class Assembler {
 
 			return opcode+"00000"+toReg1Value()+toReg3Value();
 		}
+		case "j":{
+			opcode="000010";
+			String address = "";
+			for (String s : Simulator.instructions.getMemory()){
+				if(s.equalsIgnoreCase(input1)){
+					int pc = Simulator.instructions.getMemory().indexOf(s);
+					String pcs = Integer.toBinaryString(pc);
+					address = moreDigits(26,Integer.parseInt(pcs));
+					break;
+				}
+			}
+				return opcode + address;
+			}
+		case "beq":{
+			opcode="000100";
+			String address = "";
+			for (String s : Simulator.instructions.getMemory()){
+				if(s.equalsIgnoreCase(input3)){
+					int pc = Simulator.instructions.getMemory().indexOf(s);
+					String pcs = Integer.toBinaryString(pc);
+					address = moreDigits(16,Integer.parseInt(pcs));
+					break;
+				}
+			}
+				return opcode + toReg2Value()+ toReg3Value()+ address;
+			}
+		case "bne":{
+			opcode="000101";
+			String address = "";
+			for (String s : Simulator.instructions.getMemory()){
+				if(s.equalsIgnoreCase(input3)){
+					int pc = Simulator.instructions.getMemory().indexOf(s);
+					String pcs = Integer.toBinaryString(pc);
+					address = moreDigits(16,Integer.parseInt(pcs));
+					break;
+				}
+			}
+				return opcode + toReg2Value()+ toReg3Value()+ address;
+			}
 
 
 		default: {
@@ -209,6 +250,7 @@ public class Assembler {
 			functionCode ="101001";
 			return opcode + toReg2Value() + toReg1Value()+ toReg3Value()
 					+"00000" + functionCode;}
+
 
 
 		default: {
