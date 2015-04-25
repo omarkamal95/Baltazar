@@ -552,7 +552,7 @@ public class Assembler {
 		 }
 
 	public static void main(String[] args) {
-	String instruction = assemble("sltu,$t1,$t2,$t1");
+	String instruction = assemble("add,$t1,$t1,$t2");
 		System.out.println(instruction);
 	System.out.println(instruction.length());
 		//System.out.println(moreDigits(5, 2));
