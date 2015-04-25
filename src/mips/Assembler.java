@@ -1,4 +1,5 @@
 package mips;
+
 import java.util.*;
 
 public class Assembler {
@@ -10,22 +11,34 @@ public class Assembler {
 	private static String input2;
 	private static String input3;
 	private static String imdt;
+	//private static String offset;   
 	// private static HashMap regString = new HashMap();
-	static String[] instructionArray = new String[4];
+
+	private static String[] instructionArray = new String[4];
 	private static String resultCode;
 	private static String shamt;
-
+	private static String offset;
+	
 	public static String assemble(String instruction) {
 
 		instructionArray = instruction.split(",");
 		function = instructionArray[0];
 		input1 = instructionArray[1];
 		input2 = instructionArray[2];
-		input3 = instructionArray[3];
+		//input3= instructionArray[3];
+		if(instructionArray.length>3){
+			input3 = instructionArray[3];
+		}
+
+
 		return decideFormat();
 
 	}
-
+//public static void PutInMem(){
+//	
+//	for(int i=0,)
+//	Simulator.instructions.write(0, value)
+//}
 	public static String decideFormat() {
 
 		if (function.toLowerCase().equals("add")
@@ -35,14 +48,22 @@ public class Assembler {
 				|| function.toLowerCase().equals("or")
 				|| function.toLowerCase().equals("slt")
 				|| function.toLowerCase().equals("sll")
-				|| function.toLowerCase().equals("slr")) {
+				|| function.toLowerCase().equals("slr")
+				|| function.toLowerCase().equals("sltu")) {
+
 			return toMachineCodeR();
 		}
 		if (function.toLowerCase().equals("addi")
 				|| function.toLowerCase().equals("andi")
 				|| function.toLowerCase().equals("sw")
 				|| function.toLowerCase().equals("lw")
-				|| function.toLowerCase().equals("slti")) {
+				|| function.toLowerCase().equals("slti")
+				|| function.toLowerCase().equals("lb")
+				|| function.toLowerCase().equals("lbu")
+				|| function.toLowerCase().equals("lui")
+				|| function.toLowerCase().equals("beq")
+				|| function.toLowerCase().equals("bne")) {
+
 			return toMachineCodeI();
 		} else {
 			return "";
@@ -51,10 +72,74 @@ public class Assembler {
 
 	private static String toMachineCodeI() {
 		switch (function.toLowerCase()) {
-		case "addi":
+		case "addi":{
 			opcode = "001000";
+			return opcode +toReg2Value()+ toReg1Value()+ toReg3Value();}
+		case "lw":{
+			opcode="100011";
+			offset = input2;
+			String [] resultOff=offset.split("\\(");
+			String y=resultOff[0];
+			int w=Integer.parseInt(y);
+			y=moreDigits(16,w);
+			String z=resultOff[1].substring(0,resultOff[1].length()-1);
+			input3 = z;
+			return opcode+toReg3Value()+toReg1Value()+y;
+		}
+		case "sw":{
+			opcode="101011";
+			offset = input2;
+			String [] resultOff=offset.split("\\(");
+			String y=resultOff[0];
+			int w=Integer.parseInt(y);
+			y=moreDigits(16,w);
+			String z=resultOff[1].substring(0,resultOff[1].length()-1);
+			input3 = z;
+			return opcode+toReg3Value()+toReg1Value()+y;	
 
-			return opcode + toReg1Value() + toReg2Value()+toReg3Value();
+
+		}
+		case "lb":{
+			opcode="100000";
+			offset = input2;
+			String [] resultOff=offset.split("\\(");
+			String y=resultOff[0];
+			int w=Integer.parseInt(y);
+			y=moreDigits(16,w);
+			String z=resultOff[1].substring(0,resultOff[1].length()-1);
+			input3 = z;
+			return opcode+toReg3Value()+toReg1Value()+y;	
+		}
+		case "lbu":{
+			opcode="100100";
+			offset = input2;
+			String [] resultOff=offset.split("\\(");
+			String y=resultOff[0];
+			int w=Integer.parseInt(y);
+			y=moreDigits(16,w);
+			String z=resultOff[1].substring(0,resultOff[1].length()-1);
+			input3 = z;
+			return opcode+toReg3Value()+toReg1Value()+y;	
+		}
+		case "sb":{
+			opcode= "101000";
+			offset = input2;
+			String [] resultOff=offset.split("\\(");
+			String y=resultOff[0];
+			int w=Integer.parseInt(y);
+			y=moreDigits(16,w);
+			String z=resultOff[1].substring(0,resultOff[1].length()-1);
+			input3 = z;
+			return opcode+toReg3Value()+toReg1Value()+y;	
+
+		}
+		case "lui":{
+			opcode="001111";
+			String immidiate = moreDigits(5,Integer.parseInt(toReg3Value()));
+
+			return opcode+"00000"+toReg1Value()+toReg3Value();
+		}
+
 
 		default: {
 			return "";
@@ -99,21 +184,29 @@ public class Assembler {
 		}
 		case "slt": {
 			functionCode = "101010";
-			shamt = "000000";
+			shamt="00000";			
 			return opcode + toReg2Value() + toReg3Value() + toReg1Value()
 					+ shamt + functionCode;
 		}
 		case "sll": {
 			functionCode = "000000";
-			return opcode + toReg2Value() + toReg3Value() + toReg1Value()
+			int x=Integer.parseInt(input3);
+			shamt= moreDigits(5,x);
+			return opcode +"00000" + toReg2Value() + toReg1Value()
 					+ shamt + functionCode;
 		}
 		case "slr": {
 			functionCode = "000010";
-			shamt = "00000";
-			return opcode + toReg2Value() + toReg3Value() + toReg1Value()
+			int x=Integer.parseInt(input3);
+			moreDigits(5,x);
+			return opcode + "00000" + toReg2Value() + toReg1Value()
 					+ shamt + functionCode;
 		}
+		case "sltu":{
+			functionCode ="101011";
+			return opcode + toReg2Value() + toReg3Value() + toReg1Value()
+					+ "00000" + functionCode;}
+
 		default: {
 			return "";
 
@@ -226,7 +319,6 @@ public class Assembler {
 	public static String toReg2Value() {
 		if (input2.equals("$zero")) {
 			return resultCode = "00000";
-
 		}
 		if (input2.equals("$at")) {
 			return resultCode = "00001";
@@ -423,23 +515,39 @@ public class Assembler {
 		if (input3.equals("$ra")) {
 			return resultCode = "11111";
 		} else { int x=Integer.parseInt(input3);
-			return moreDigits(16,x);
-			
+		if(x<0){
+			return moreNegDigits(16,x);
 		}
+		else{return moreDigits(16,x);
+		//if(input3.charAt(0)== '-'){
+
+
+		}}
+		//
+
 	}
+
 
 	public static String moreDigits(int size, int x) {
+				String binary = Integer.toBinaryString(x);
+				for (int i = size - binary.length(); i > 0; i--) {
+					binary = "0" + binary;
+				}
+				return binary;
+		
+	}
+	public static String moreNegDigits(int size, int x) {
 		String binary = Integer.toBinaryString(x);
+		binary=binary.substring(16);
 		for (int i = size - binary.length(); i > 0; i--) {
-			binary = "0" + binary;
+			binary = "1" + binary;
 		}
 		return binary;
-	}
 
-	public static void main(String [] args) {
-		System.out.println(assemble("add,$t0,$s0,$zero"));
-		String s= "00000000000000000000000000011100";
-	     
-		System.out.println(""+Integer.parseInt(s,2));
+}
+	public static void main(String[] args) {
+	System.out.println(assemble("sll,$t1,$t1,2"));
+		//System.out.println(moreDigits(5, 2));
+		//System.out.println("001000010010100111111111111111111111111111111100".length());
 	}
 }
