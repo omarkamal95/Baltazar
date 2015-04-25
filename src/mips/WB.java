@@ -22,6 +22,8 @@ public class WB {
 			WriteRegister = Pipelining.getMEMWB().get("WriteReg");
 			value = Pipelining.getMEMWB().get("ReadData");
 			load = Pipelining.getMEMWB().get("MemRead");
+			String ALUResult = Pipelining.getMEMWB().get("ALUResult");
+			int ALUValue = (int) Long.parseLong(ALUResult, 2);
 			if (RegDestination.equals("1")) {
 				if (load.equals("1")) {
 					
@@ -29,7 +31,7 @@ public class WB {
 							WriteRegister,Integer.parseInt(value));
 				} else {
 					Simulator.getRegisters().put(
-							WriteRegister,Integer.parseInt(value));
+							WriteRegister,ALUValue);
 
 					// Simulator.getRegisters().put(WriteRegister,
 					// Integer.parseInt(Pipelining.getMEMWB().get("ALUResult"),2));
