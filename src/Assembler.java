@@ -6,7 +6,7 @@ public class Assembler {
 	private static String opcode;
 	private static String function;
 	private static String input1;
-	private static String input2;
+	private static String input5;
 	private static String input3;
 	private static String imdt;
 	//private static String offset;   
